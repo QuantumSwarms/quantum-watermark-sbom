@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.epochcoreqcs.com/watermark/v0.1.json",
+  "title": "EpochCore Quantum Watermark",
+  "description": "Tamper-evident binding embedded in every EpochCore agent response and pixel tensor.",
+  "type": "object",
+  "required": ["version", "nonce", "ts", "seed_source", "alg", "sig"],
+  "properties": {
+    "version": { "type": "string", "const": "0.1" },
+    "nonce": { "type": "string", "description": "base64url, 32 bytes" },
+    "ts": { "type": "string", "format": "date-time" },
+    "seed_source": {
+      "type": "string",
+      "enum": ["dwave-qrng", "nist-beacon", "hybrid"]
+    },
+    "dkap_address": { "type": "string" },
+    "alg": {
+      "type": "object",
+      "required": ["mac", "sig"],
+      "properties": {
+        "mac": { "type": "string", "const": "HMAC-SHA3-512" },
+        "sig": { "type": "string", "const": "ML-DSA-65" }
+      }
+    },
+    "sig": { "type": "string", "description": "base64url ML-DSA signature" },
+    "anchor": {
+      "type": "object",
+      "properties": {
+        "chain_a": { "type": "string" },
+        "chain_b": { "type": "string" },
+        "block": { "type": "integer" }
+      }
+    }
+  }
+}
